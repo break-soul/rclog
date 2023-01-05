@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 # SetLogger.py
 
+from os import getenv
 from logging.config import dictConfig
 
 from .GetLogger import get_logger
+from .GlobalHook import get_global
 from .TransCoding import trans_config
 
 logger = get_logger("Logger.SetLogger")
@@ -21,6 +23,8 @@ def from_dict(config_dict: dict):
         dictConfig(trans_config(**config_dict))
     except Exception as e:
         logger.error("Failed to set logging config: %s" % e)
+        if(get_global("DEBUG") == True):
+            raise
 
 
 def from_args(*args,**kw):
@@ -32,7 +36,8 @@ def from_args(*args,**kw):
         dictConfig(trans_config(*args,**kw))
     except Exception as e:
         logger.error("Failed to set logging config: %s" % e)
-        raise
+        if(get_global("DEBUG") == True):
+            raise
 
 
 def from_object(obj: object):
@@ -44,13 +49,13 @@ def from_object(obj: object):
     """
 
     try:
-        from .ImportString import import_string
         config_dict = dict()
-        if isinstance(obj, str):
-            log_config = import_string(obj)
-        for key in dir(log_config):
-            if key.isupper():
-                config_dict[key] = getattr(log_config, key)
+        for key in dir(obj):
+            if key.find("_") != 0:
+                config_dict[key] = getattr(obj, key)
         dictConfig(trans_config(**config_dict))
     except Exception as e:
         logger.error("Failed to set logging config: %s" % e)
+        if(get_global("DEBUG") == True):
+            raise
+
