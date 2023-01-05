@@ -1,96 +1,115 @@
 # -*- coding: utf-8 -*-
 # TransCoding.py
 
-def formatters(formatter_name:str,format:str,datefmt:str,**kw):
-    
-    return {formatter_name:{"format": format,"datefmt": datefmt}}
 
-def handler(handler_class:str,formatter:str,level:str,**kw):
-    if(handler_class is "logging.StreamHandler"):
-        return {"class": handler_class,"formatter": formatter,"level": level}
-    else:
-        return {"class": handler_class,"formatter": formatter,"level": level,"filename": kw["filename"],"maxBytes": kw["maxBytes"],"backupCount": kw["backupCount"],"encoding": kw["encoding"]}
-
-
-def trans_coding(LOG_FORMAT="<%(asctime)s>[%(levelname)s]%(name)s:%(message)s",
-               DATA_FORMAT="%Y-%m-%d %H:%M:%S",
-               CONSOLE=True,
-               LOG_LEVEL="INFO",
-               LOG_FILE="Temp/logs/info.log",
-               LOG_FILE_MAX_SIZE=1048576,
-               LOG_FILE_BACKUP_COUNT=3,
-               ERROR_FILE="Temp/logs/error.log",
-               ERROR_FILE_MAX_SIZE=1048576,
-               ERROR_FILE_BACKUP_COUNT=3,
-               ENCODING="utf8") -> dict:
+def dump_format(format_name: str = "default",
+                **kw: dict[str, str]) -> dict[str, dict[str, str]]:
     """
-    解析日志配置
+    dump formatters
 
     Args:
-        LOG_FORMAT (str, optional): 日志格式. Defaults to "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s".
-        DATA_FORMAT (str, optional): 日期格式. Defaults to "%Y-%m-%d %H:%M:%S".
-        CONSOLE (bool, optional): 开启命令行. Defaults to True.
-        LOG_LEVEL (str, optional): 日志文件等级. Defaults to "INFO".
-        LOG_FILE (str, optional): 日志文件位置. Defaults to "Temp/logs/info.log".
-        LOG_FILE_MAX_SIZE (int, optional): 日志文件大小. Defaults to 1048576.
-        LOG_FILE_BACKUP_COUNT (int, optional): 日志文件计数. Defaults to 3.
-        ERROR_FILE (str, optional): 错误文件地址. Defaults to "Temp/logs/error.log".
-        ERROR_FILE_MAX_SIZE (int, optional): 错误文件大小. Defaults to 1048576.
-        ERROR_FILE_BACKUP_COUNT (int, optional): 错误文件计数. Defaults to 3.
-        ENCODING (str, optional): 编码. Defaults to "utf8".
+        format_name (str): format name. Defaults to format.
+
+    Keyword Args:
+        format (str, optional): format.
+        datefmt (str, optional): data format.
 
     Returns:
-        dict: logging config
+        dict[str, dict[str, str]]: logging dict config format
     """
-    config = {
-        "version": 1,
-        "disable_existing_loggers": "False",
-        "formatters": dict(),
-        "handlers": dict(),
-        "loggers": {
-            "root": {
-                "handlers": []
-            }
-        }
-    }
-    config["version"] = 1
-    config["disable_existing_loggers"] = "False"
-    config["formatters"] = {
-        "default": {
-            "format": LOG_FORMAT,
-            "datefmt": DATA_FORMAT
-        }
-    }
-    config["loggers"]["root"]["level"] = "INFO"
-    config["loggers"]["root"]["handlers"] = list()
-    if (CONSOLE is True):
-        config["handlers"]["console"] = {
-            "class": "logging.StreamHandler",
-            "formatter": "default",
-            "level": "INFO"
-        }
-        config["loggers"]["root"]["handlers"].append("console")
-    if (LOG_LEVEL is not None):
-        config["handlers"]["file"] = {
-            "class": "logging.handlers.RotatingFileHandler",
-            "formatter": "default",
-            "level": LOG_LEVEL,
-            "filename": LOG_FILE,
-            "maxBytes": LOG_FILE_MAX_SIZE,
-            "backupCount": LOG_FILE_BACKUP_COUNT,
-            "encoding": ENCODING
-        }
-        config["loggers"]["root"]["handlers"].append("file")
-    if (ERROR_FILE is not None):
-        config["handlers"]["error_file"] = {
-            "class": "logging.handlers.RotatingFileHandler",
-            "formatter": "default",
-            "level": "ERROR",
-            "filename": ERROR_FILE,
-            "maxBytes": ERROR_FILE_MAX_SIZE,
-            "backupCount": ERROR_FILE_BACKUP_COUNT,
-            "encoding": ENCODING
-        }
-        config["loggers"]["root"]["handlers"].append("error_file")
-    return config
 
+    back_format = dict()
+    if (format_name == "default"):
+        kw["format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
+        kw["datefmt"] = "%Y-%m-%d %H:%M:%S"
+    back_format["format"] = kw["format"]
+    back_format["datefmt"] = kw["datefmt"]
+    return back_format
+
+
+def dump_handler(handler_class: str,
+                 formatter: str = "default",
+                 level: str | None = None,
+                 **kw) -> dict[str, str]:
+    """
+    dump handlers
+
+    Args:
+        handler_class (str): log handler class
+        formatter (str): log formatter. Defaults to "default".
+        level (str | None): log level. Defaults to None.
+
+    Keyword Args:
+        filename (str, optional): log file name. Defaults to None.
+        maxBytes (int, optional): log file max size. Defaults to None.
+        backupCount (int, optional): log file backup count. Defaults to None.
+        encoding (str, optional): log file encoding. Defaults to "utf8".
+
+    Returns:
+        dict[str, str]: logging dict config handler
+    """
+    back_handler = dict()
+    back_handler["class"] = handler_class
+    back_handler["formatter"] = formatter
+    if (level != None):
+        back_handler["level"] = level
+    if (handler_class != "logging.StreamHandler"):
+        if (kw["filename"] != None):
+            back_handler["filename"] = kw["filename"]
+        if (kw["maxBytes"] != None):
+            back_handler["maxBytes"] = kw["maxBytes"]
+        if (kw["backupCount"] != None):
+            back_handler["backupCount"] = kw["backupCount"]
+        if (kw["encoding"] != None):
+            back_handler["encoding"] = kw["encoding"]
+        else:
+            back_handler["encoding"] = "utf8"
+    return back_handler
+
+
+def trans_config(handlers: list,
+                 formats: list = [
+                     "default",
+                 ],
+                 exist_loggers: bool = True,
+                 **kw):
+
+    # init config
+    config = dict()
+    config["version"] = 1
+    config["formatters"] = dict()
+    config["handlers"] = dict()
+    config["loggers"] = dict()
+    config["loggers"]["root"] = dict()
+    config["loggers"]["root"]["handlers"] = list()
+
+    # exist loggers
+    if (exist_loggers is True):
+        config["disable_existing_loggers"] = "False"
+    else:
+        config["disable_existing_loggers"] = "True"
+
+    # formatters
+    for format_name in formats:
+        config["formatters"][format_name] = dump_format(
+            format_name=format_name,
+            format=kw.get(f"{format_name}_format"),
+            datefmt=kw.get(f"{format_name}_datefmt"))
+
+    # handlers
+    for handler_name in handlers:
+        if (kw.get(f"{handler_name}_class") == "Console"):
+            kw[f"{handler_name}_class"] = "logging.StreamHandler"
+        if (kw.get(f"{handler_name}_class") == "File"):
+            kw[f"{handler_name}_class"] = "logging.handlers.RotatingFileHandler"
+        config["handlers"][handler_name] = dump_handler(
+            handler_class=kw.get(f"{handler_name}_class"),
+            formatter=kw.get(f"{handler_name}_formatter", "default"),
+            level=kw.get(f"{handler_name}_level", "INFO"),
+            filename=kw.get(f"{handler_name}_filename", "Temp/logs/info.log"),
+            maxBytes=kw.get(f"{handler_name}_maxBytes", 1048576),
+            backupCount=kw.get(f"{handler_name}_backupCount", 3),
+            encoding=kw.get(f"{handler_name}_encoding", "utf8"))
+        config["loggers"]["root"]["handlers"].append(handler_name)
+
+    return config
