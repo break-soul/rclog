@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Src\Utils\Log\ImportString.py
+# ImportString.py
 
 import sys
 from typing import Any
