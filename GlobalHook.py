@@ -46,3 +46,18 @@ def set_global(key, value):
     if (check):
         check.get_global_dict[key] = value
     environ.get[key] = value
+
+
+def translate(text: str) -> str:
+    """
+    Translate text
+
+    Args:
+        text (str): Text
+
+    Returns
+        str: Translated text
+    """
+    if (check):
+        return check.translate(text)
+    return text
