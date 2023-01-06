@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # TransCoding.py
 
-from logging import StreamHandler,handlers,INFO
+from logging import INFO
 from typing import Any
 
 def dump_format(format_name: str = "default",
@@ -52,9 +52,9 @@ def dump_handler(handler_class: str,
     """
     back_handler = dict()
     if (handler_class == "Console"):
-        handler_class =  StreamHandler
+        handler_class =  "logging.StreamHandler"
     if (handler_class == "File"):
-        handler_class = handlers.RotatingFileHandler
+        handler_class = "logging.handlers.RotatingFileHandler"
     back_handler["class"] = handler_class
     if (handler_class == "logging.NullHandler"):
         return back_handler
