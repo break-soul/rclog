@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # TransCoding.py
 
+from logging import StreamHandler,handlers,INFO
 from typing import Any
 
 def dump_format(format_name: str = "default",
@@ -50,7 +51,13 @@ def dump_handler(handler_class: str,
         dict[str, str]: logging dict config handler
     """
     back_handler = dict()
+    if (handler_class == "Console"):
+        handler_class =  StreamHandler
+    if (handler_class == "File"):
+        handler_class = handlers.RotatingFileHandler
     back_handler["class"] = handler_class
+    if (handler_class == "logging.NullHandler"):
+        return back_handler
     back_handler["formatter"] = formatter
     if (level != None):
         back_handler["level"] = level
@@ -121,14 +128,10 @@ def trans_config(handlers: list,
 
     # handlers
     for handler_name in handlers:
-        if (kw.get(f"{handler_name}_class") == "Console"):
-            kw[f"{handler_name}_class"] = "logging.StreamHandler"
-        if (kw.get(f"{handler_name}_class") == "File"):
-            kw[f"{handler_name}_class"] = "logging.handlers.RotatingFileHandler"
         config["handlers"][handler_name] = dump_handler(
             handler_class=kw.get(f"{handler_name}_class"),
             formatter=kw.get(f"{handler_name}_formatter", "default"),
-            level=kw.get(f"{handler_name}_level", "INFO"),
+            level=kw.get(f"{handler_name}_level", INFO),
             filename=kw.get(f"{handler_name}_filename", "Temp/logs/info.log"),
             maxBytes=kw.get(f"{handler_name}_maxBytes", 1048576),
             backupCount=kw.get(f"{handler_name}_backupCount", 3),

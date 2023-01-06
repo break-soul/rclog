@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 # GetLogger.py
 
-import logging
+from inspect import stack
+from os.path import basename
+from logging import Logger, getLogger
 
 
-def get_logger(logger_name: str | None = ...) -> logging.Logger:
+def get_logger(logger_name: str | None = None) -> Logger:
     """
     获取日志对象
 
@@ -12,6 +14,8 @@ def get_logger(logger_name: str | None = ...) -> logging.Logger:
         logger_name (str): If no name is specified, return the root logger.
 
     Returns:
-        logging.Logger: 日志对象
+        Logger: 日志对象
     """
-    return logging.getLogger(logger_name)
+    if (logger_name == None):
+        logger_name = basename(stack()[1][1]).split(".")[0]
+    return getLogger(logger_name)
