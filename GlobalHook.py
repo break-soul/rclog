@@ -6,7 +6,7 @@
 from os import environ
 
 
-def check_global() -> bool:
+def check_global() -> object | bool:
     """
     Check global variables
 
@@ -31,7 +31,7 @@ def get_global(var, default=None):
         dict: Global variables
     """
     if (check != False):
-        return check.get_var(var, default)
+        return check.get_var(var, default)  # type: ignore
     return environ.get(var, default)
 
 
@@ -44,5 +44,5 @@ def set_global(key, value):
         value (any): Value
     """
     if (check != False):
-        check.set_var(key, value)
-    environ.get[key] = value
+        check.set_var(key, value) # type: ignore
+    environ.get[key] = value # type: ignore

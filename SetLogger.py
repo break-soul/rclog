@@ -34,7 +34,7 @@ def from_args(*args,**kw):
     try:
         dictConfig(trans_config(*args,**kw))
     except Exception as e:
-        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=config_dict))
+        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=(str(args)+str(kw))))
         if(get_global("DEBUG") == True):
             raise
 
@@ -54,7 +54,7 @@ def from_object(obj: object):
                 config_dict[key] = getattr(obj, key)
         dictConfig(trans_config(**config_dict))
     except Exception as e:
-        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=config_dict))
+        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=obj))
         if(get_global("DEBUG") == True):
             raise
 

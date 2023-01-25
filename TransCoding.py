@@ -4,6 +4,7 @@
 from logging import INFO
 from typing import Any
 
+
 def dump_format(format_name: str = "default",
                 **kw: dict[str, str]) -> dict[str, dict[str, str]]:
     """
@@ -22,10 +23,12 @@ def dump_format(format_name: str = "default",
 
     back_format = dict()
     if (format_name == "default"):
-        kw["format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
-        kw["datefmt"] = "%Y-%m-%d %H:%M:%S"
-    back_format["format"] = kw["format"]
-    back_format["datefmt"] = kw["datefmt"]
+        back_format[
+            "format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
+        back_format["datefmt"] = "%Y-%m-%d %H:%M:%S"
+    else:
+        back_format["format"] = kw["format"]
+        back_format["datefmt"] = kw["datefmt"]
     return back_format
 
 
@@ -52,7 +55,7 @@ def dump_handler(handler_class: str,
     """
     back_handler = dict()
     if (handler_class == "Console"):
-        handler_class =  "logging.StreamHandler"
+        handler_class = "logging.StreamHandler"
     if (handler_class == "File"):
         handler_class = "logging.handlers.RotatingFileHandler"
     back_handler["class"] = handler_class
@@ -123,13 +126,13 @@ def trans_config(handlers: list,
     for format_name in formats:
         config["formatters"][format_name] = dump_format(
             format_name=format_name,
-            format=kw.get(f"{format_name}_format"),
-            datefmt=kw.get(f"{format_name}_datefmt"))
+            format=kw.get(f"{format_name}_format"),  # type:ignore
+            datefmt=kw.get(f"{format_name}_datefmt"))  # type:ignore
 
     # handlers
     for handler_name in handlers:
         config["handlers"][handler_name] = dump_handler(
-            handler_class=kw.get(f"{handler_name}_class"),
+            handler_class=kw.get(f"{handler_name}_class"),  # type:ignore
             formatter=kw.get(f"{handler_name}_formatter", "default"),
             level=kw.get(f"{handler_name}_level", INFO),
             filename=kw.get(f"{handler_name}_filename", "Temp/logs/info.log"),
