@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 # Global.py
 
-from functools import cache
 from os import getenv
+from functools import cache
 
 
 def _check_env(text) -> bool:
