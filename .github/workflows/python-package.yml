@@ -34,7 +34,9 @@ jobs:
         mkdir whl
         mv dist/*.whl whl/
     - name: upload result
-      uses: actions/download-artifact@v3
+      if: success()
+      uses: actions/upload-artifact@v3
       with :
-        name: build-3.10
-        path: ~/whl/
+        name: build
+        path: |
+          ${{ github.workspace }}/whl
