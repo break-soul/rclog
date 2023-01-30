@@ -2,7 +2,7 @@
 
 [project]
 name = "PyLogger"
-version = "0.1.0"
+version = "1.1.0"
 description = ""
 authors = [
     {name = "break-soul", email = "57186766+break-soul@users.noreply.github.com"},
