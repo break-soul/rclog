@@ -3,8 +3,8 @@
 
 from logging.config import dictConfig
 
+from .Global import check_debug
 from .GetLogger import get_logger
-from .GlobalHook import get_global
 from .TransCoding import trans_config
 
 logger = get_logger("Logger.SetLogger")
@@ -21,21 +21,24 @@ def from_dict(config_dict: dict):
     try:
         dictConfig(trans_config(**config_dict))
     except Exception as e:
-        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=config_dict))
-        if(get_global("DEBUG") == True):
+        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
+                                                                                  data=config_dict))
+        if (check_debug() == True):
             raise
 
 
-def from_args(*args,**kw):
+def from_args(*args, **kw):
     """
     从函数参数初始化日志配置
     """
 
     try:
-        dictConfig(trans_config(*args,**kw))
+        dictConfig(trans_config(*args, **kw))
     except Exception as e:
-        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=(str(args)+str(kw))))
-        if(get_global("DEBUG") == True):
+        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
+                                                                                  data=(str(args) +
+                                                                                        str(kw))))
+        if (check_debug() == True):
             raise
 
 
@@ -54,7 +57,7 @@ def from_object(obj: object):
                 config_dict[key] = getattr(obj, key)
         dictConfig(trans_config(**config_dict))
     except Exception as e:
-        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,data=obj))
-        if(get_global("DEBUG") == True):
+        logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
+                                                                                  data=obj))
+        if (check_debug() == True):
             raise
-
