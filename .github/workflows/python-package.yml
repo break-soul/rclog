@@ -37,4 +37,4 @@ jobs:
       uses: actions/download-artifact@v3
       with :
         name: build-3.10
-        path: ${{ github.workspace }}/whl
+        path: ~/whl/
