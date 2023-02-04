@@ -10,6 +10,9 @@ requires-python = ">=3.9"
 readme = "README.md"
 license = { text = "MIT" }
 
+[project.urls]
+Repository = "https://github.com/break-soul/rclog"
+
 [build-system]
 requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
