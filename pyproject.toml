@@ -1,7 +1,7 @@
 [tool.pdm]
 
 [project]
-name = "PyLogger"
+name = "rclog"
 version = "1.1.0"
 description = ""
 authors = [
