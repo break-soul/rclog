@@ -1,4 +1,4 @@
-# PyLogger
+# rclog
 [![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
 
 对python中logging模块的包装
