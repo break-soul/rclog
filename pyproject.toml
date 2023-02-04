@@ -3,15 +3,23 @@
 [project]
 name = "rclog"
 version = "1.1.0"
-description = ""
-authors = [
-    {name = "break-soul", email = "57186766+break-soul@users.noreply.github.com"},
-]
+description = "A wrapper for the logging module in python."
+authors = [{ name = "break-soul", email = "rouc@rouc.net" }]
 dependencies = []
 requires-python = ">=3.10"
 readme = "README.md"
-license = {text = "MIT"}
+license = { text = "MIT" }
 
 [build-system]
 requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
+
+[tool.yapf]
+based_on_style = "yapf"
+spaces_before_comment = 4
+split_before_logical_operator = true
+column_limit = 100
+
+[tool.isort]
+profile = "black"
+line_length = 100
