@@ -6,7 +6,7 @@ version = "1.2.0"
 description = "A wrapper for the logging module in python."
 authors = [{ name = "break-soul", email = "rouc@rouc.net" }]
 dependencies = []
-requires-python = ">=3.10"
+requires-python = ">=3.9"
 readme = "README.md"
 license = { text = "MIT" }
 

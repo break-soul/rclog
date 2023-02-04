@@ -5,8 +5,10 @@ from inspect import stack
 from os.path import basename
 from logging import Logger, getLogger
 
+from typing import Optional
 
-def get_logger(logger_name: str | None = None) -> Logger:
+
+def get_logger(logger_name: Optional[str] = None) -> Logger:
     """
     获取日志对象
 

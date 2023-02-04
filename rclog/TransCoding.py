@@ -2,7 +2,7 @@
 # TransCoding.py
 
 from logging import INFO
-from typing import Any
+from typing import Any,Optional
 
 
 def dump_format(format_name: str = "default",
@@ -34,7 +34,7 @@ def dump_format(format_name: str = "default",
 
 def dump_handler(handler_class: str,
                  formatter: str = "default",
-                 level: str | None = None,
+                 level: Optional[str] = None,
                  **kw) -> dict[str, str]:
     """
     dump handlers
