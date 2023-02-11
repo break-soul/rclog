@@ -1,14 +1,17 @@
 # rclog
-![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)![PyPI](https://img.shields.io/pypi/v/rclog)![PyPI - License](https://img.shields.io/pypi/l/rclog)![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/break-soul/rclog/python-package.yml?label=build)
+![PyPI](https://img.shields.io/pypi/v/rclog)
+![PyPI - License](https://img.shields.io/pypi/l/rclog)
 
-对python中logging模块的包装
+![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/break-soul/rclog/python-package.yml?label=build)
+
+Packaging to the logging module in python
 
 # 接口
-对外提供`SetLogger`和`get_logger`
+Provide `set_log` and` get_log`
 
-## `SetLogger`
-`SetLogger` 内有from_dict,from_args,from_object多个函数，可用多种方式配置log，有下列配置选项
-
+## `set_log`
+`set_log` can be configured in various ways, and there are the following configuration options:
 
     Args:
         handlers (list): _description_
@@ -26,5 +29,5 @@
         "{handler_name}_backupCount" (int, optional): _description_. Defaults to None.
         "{handler_name}_encoding" (str, optional): _description_. Defaults to "utf8".
 
-## `get_logger`
-`get_logger`函数可以获取`Logger`对象，可以设置名字，默认为调用的文件名
+## `get_log`
+The `get_log` function can get the` logger` object, you can set the name, the file name that the default is called
