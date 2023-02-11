@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# SetLogger.py
+# rclog/setlog.py
 
 from logging.config import dictConfig
 
@@ -7,7 +7,7 @@ from .env import check_debug
 from .getlog import get_logger
 from .trans import trans_config
 
-logger = get_logger("Logger.SetLogger")
+logger = get_logger("rclog.SetLogger")
 
 
 def from_dict(config_dict: dict):

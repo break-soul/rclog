@@ -1,12 +1,24 @@
 # -*- coding: utf-8 -*-
-# Global.py
+# rclog/env.py
 
-from os import getenv
 from functools import lru_cache
+from os import getenv
 
 
-def _check_env(text) -> bool:
-    if text != "true":
+def _trans_env(text: str) -> bool:
+    """
+    get environment variable to bool
+
+    Args:
+        text (str): environment variable
+
+    Returns:
+        bool: environment variable to bool
+    """
+    if text == False :
+        return False
+
+    if text != "true" or text == True or text == "True":
         return True
     else:
         return False
@@ -14,4 +26,11 @@ def _check_env(text) -> bool:
 
 @lru_cache
 def check_debug() -> bool:
-    return _check_env(getenv("Debug", default="false"))
+    """
+    Check whether it is DEBUG mode
+
+    Returns:
+        bool: __debug__
+    """
+
+    return _trans_env(getenv("DEBUG", default=False))

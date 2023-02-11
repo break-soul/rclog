@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
-# TransCoding.py
+# rclog/trans.py
 
 from logging import INFO
 from typing import Any,Optional
 
+from .env import check_debug
+from .io import mkdir
 
 def dump_format(format_name: str = "default",
                 **kw: dict[str, str]) -> dict[str, dict[str, str]]:
@@ -32,6 +34,7 @@ def dump_format(format_name: str = "default",
     return back_format
 
 
+
 def dump_handler(handler_class: str,
                  formatter: str = "default",
                  level: Optional[str] = None,
@@ -54,27 +57,43 @@ def dump_handler(handler_class: str,
         dict[str, str]: logging dict config handler
     """
     back_handler = dict()
+
+    # region trans handlers
     if (handler_class == "Console"):
         handler_class = "logging.StreamHandler"
     if (handler_class == "File"):
         handler_class = "logging.handlers.RotatingFileHandler"
+    # endregion
+
+    # region dump handlers
     back_handler["class"] = handler_class
     if (handler_class == "logging.NullHandler"):
         return back_handler
+
     back_handler["formatter"] = formatter
     if (level != None):
         back_handler["level"] = level
-    if (handler_class != "logging.StreamHandler"):
+    if (back_handler["class"] == "logging.handlers.RotatingFileHandler"):
         if (kw["filename"] != None):
             back_handler["filename"] = kw["filename"]
-        if (kw["maxBytes"] != None):
-            back_handler["maxBytes"] = kw["maxBytes"]
-        if (kw["backupCount"] != None):
-            back_handler["backupCount"] = kw["backupCount"]
-        if (kw["encoding"] != None):
-            back_handler["encoding"] = kw["encoding"]
-        else:
-            back_handler["encoding"] = "utf8"
+            # if file mkdir
+            match mkdir():
+                case 10:
+                    pass
+                case 11:
+                    pass
+                case 21:
+                    if check_debug():
+                        raise Exception("make file dir is in error!")
+        else :
+            raise Exception("Filename is none!")
+
+        back_handler["maxBytes"] = kw["maxBytes"]
+        back_handler["backupCount"] = kw["backupCount"]
+        back_handler["encoding"] = kw["encoding"]
+        back_handler["encoding"] = "utf8"
+    # endregion
+
     return back_handler
 
 
@@ -135,7 +154,7 @@ def trans_config(handlers: list,
             handler_class=kw.get(f"{handler_name}_class"),  # type:ignore
             formatter=kw.get(f"{handler_name}_formatter", "default"),
             level=kw.get(f"{handler_name}_level", INFO),
-            filename=kw.get(f"{handler_name}_filename", "Temp/logs/info.log"),
+            filename=kw.get(f"{handler_name}_filename", "log.log"),
             maxBytes=kw.get(f"{handler_name}_maxBytes", 1048576),
             backupCount=kw.get(f"{handler_name}_backupCount", 3),
             encoding=kw.get(f"{handler_name}_encoding", "utf8"))

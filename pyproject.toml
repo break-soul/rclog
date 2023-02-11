@@ -1,5 +1,3 @@
-[tool.pdm]
-
 [project]
 name = "rclog"
 version = "1.3.0"
@@ -16,6 +14,11 @@ Repository = "https://github.com/break-soul/rclog"
 [build-system]
 requires = ["pdm-pep517>=1.0"]
 build-backend = "pdm.pep517.api"
+
+[tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = ["yapf>=0.32.0"]
+
 
 [tool.yapf]
 based_on_style = "yapf"
