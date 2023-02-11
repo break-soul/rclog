@@ -3,9 +3,9 @@
 
 from logging.config import dictConfig
 
-from .Global import check_debug
-from .GetLogger import get_logger
-from .TransCoding import trans_config
+from .env import check_debug
+from .getlog import get_logger
+from .trans import trans_config
 
 logger = get_logger("Logger.SetLogger")
 

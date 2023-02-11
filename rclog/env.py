@@ -2,7 +2,7 @@
 # Global.py
 
 from os import getenv
-from functools import cache
+from functools import lru_cache
 
 
 def _check_env(text) -> bool:
@@ -12,6 +12,6 @@ def _check_env(text) -> bool:
         return False
 
 
-@cache
+@lru_cache
 def check_debug() -> bool:
     return _check_env(getenv("Debug", default="false"))
