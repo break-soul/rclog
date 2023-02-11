@@ -1,5 +1,5 @@
 # rclog
-[![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)![PyPI](https://img.shields.io/pypi/v/rclog)![PyPI - License](https://img.shields.io/pypi/l/rclog)![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/break-soul/rclog/python-package.yml?label=build)
 
 对python中logging模块的包装
 
