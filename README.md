@@ -7,7 +7,7 @@
 
 Packaging to the logging module in python
 
-# 接口
+# Interface
 Provide `set_log` and` get_log`
 
 ## `set_log`
