@@ -2,7 +2,7 @@
 ![PyPI](https://img.shields.io/pypi/v/rclog)
 ![PyPI - License](https://img.shields.io/pypi/l/rclog)
 
-![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)](https://pdm.fming.dev)
+![pdm-managed](https://img.shields.io/badge/pdm-managed-blueviolet)]
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/break-soul/rclog/python-package.yml?label=build)
 
 Packaging to the logging module in python
