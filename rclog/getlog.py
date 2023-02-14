@@ -8,7 +8,7 @@ from logging import Logger, getLogger
 
 
 
-def get_logger(logger_name: str|None = None) -> Logger:
+def get_log(logger_name: str|None = None) -> Logger:
     """
     Get the logging object
 
