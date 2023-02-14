@@ -4,10 +4,10 @@
 from logging.config import dictConfig
 
 from .env import check_debug
-from .getlog import get_logger
+from .getlog import get_log
 from .trans import trans_config
 
-logger = get_logger("rclog.SetLogger")
+logger = get_log("rclog.SetLogger")
 
 
 def from_dict(config_dict: dict):
