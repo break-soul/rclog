@@ -2,7 +2,8 @@ name: Pypi
 
 on:
   release:
-    types:[released]
+    types:
+      - released
 
 jobs:
   pypi-publish:
