@@ -24,7 +24,7 @@ def dump_format(format_name: str = "default",
     """
 
     back_format = dict()
-    if (format_name == "default"):
+    if format_name == "default":
         back_format[
             "format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
         back_format["datefmt"] = "%Y-%m-%d %H:%M:%S"
@@ -59,22 +59,22 @@ def dump_handler(handler_class: str,
     back_handler = dict()
 
     # region trans handlers
-    if (handler_class == "Console"):
+    if handler_class == "Console":
         handler_class = "logging.StreamHandler"
-    if (handler_class == "File"):
+    if handler_class == "File":
         handler_class = "logging.handlers.RotatingFileHandler"
     # endregion
 
     # region dump handlers
     back_handler["class"] = handler_class
-    if (handler_class == "logging.NullHandler"):
+    if handler_class == "logging.NullHandler":
         return back_handler
 
     back_handler["formatter"] = formatter
-    if (level != None):
+    if level is not None:
         back_handler["level"] = level
-    if (back_handler["class"] == "logging.handlers.RotatingFileHandler"):
-        if (kw["filename"] != None):
+    if back_handler["class"] == "logging.handlers.RotatingFileHandler":
+        if kw["filename"] is not None:
             back_handler["filename"] = kw["filename"]
             # if file mkdir
             match mkdir(back_handler["filename"]):
@@ -84,9 +84,9 @@ def dump_handler(handler_class: str,
                     pass
                 case 21:
                     if check_debug():
-                        raise Exception("make file dir is in error!")
+                        raise OSError("make file dir is in error!")
         else :
-            raise Exception("Filename is none!")
+            raise OSError("Filename is none!")
 
         back_handler["maxBytes"] = kw["maxBytes"]
         back_handler["backupCount"] = kw["backupCount"]
@@ -98,9 +98,7 @@ def dump_handler(handler_class: str,
 
 
 def trans_config(handlers: list,
-                 formats: list = [
-                     "default",
-                 ],
+                 formats: list|None = None,
                  exist_loggers: bool = True,
                  **kw) -> dict[str, Any]:
     """
@@ -112,7 +110,8 @@ def trans_config(handlers: list,
         exist_loggers (bool, optional): _description_. Defaults to True.
 
     Keyword Args:
-        "{format_name}_format" (str, optional): _description_. Defaults to "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s".
+        "{format_name}_format" (str, optional): _description_. 
+            Defaults to "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s".
         "{format_name}_datefmt" (str, optional): _description_. Defaults to "%Y-%m-%d %H:%M:%S".
         "{handler_name}_class" (str, optional): _description_. Defaults to "Console".
         "{handler_name}_formatter" (str, optional): _description_. Defaults to "default".
@@ -136,10 +135,14 @@ def trans_config(handlers: list,
     config["loggers"]["root"]["handlers"] = list()
 
     # exist loggers
-    if (exist_loggers is True):
+    if exist_loggers is True:
         config["disable_existing_loggers"] = "False"
     else:
         config["disable_existing_loggers"] = "True"
+
+    # default formats
+    if formats is None:
+        formats = ["default", ]
 
     # formatters
     for format_name in formats:

@@ -1,6 +1,6 @@
 [project]
 name = "rclog"
-version = "1.3.3"
+version = "1.3.4"
 description = "A wrapper for the logging module in python."
 authors = [{ name = "break-soul", email = "rouc@rouc.net" }]
 dependencies = []
@@ -18,13 +18,6 @@ build-backend = "pdm.pep517.api"
 [tool.pdm]
 [tool.pdm.dev-dependencies]
 dev = []
-
-
-[tool.yapf]
-based_on_style = "yapf"
-spaces_before_comment = 4
-split_before_logical_operator = true
-column_limit = 100
 
 [tool.isort]
 profile = "black"
