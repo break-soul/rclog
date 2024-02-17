@@ -17,7 +17,7 @@ build-backend = "pdm.pep517.api"
 
 [tool.pdm]
 [tool.pdm.dev-dependencies]
-dev = ["yapf>=0.32.0"]
+dev = []
 
 
 [tool.yapf]

@@ -19,7 +19,7 @@ def from_dict(config_dict: dict):
     """
 
     try:
-        dictConfig(trans_config(**config_dict))
+        dictConfig(trans_config(**config_dict), force=True)
     except Exception as e:
         logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
                                                                                   data=config_dict))
@@ -33,7 +33,7 @@ def from_args(*args, **kw):
     """
 
     try:
-        dictConfig(trans_config(*args, **kw))
+        dictConfig(trans_config(*args, **kw), force=True)
     except Exception as e:
         logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
                                                                                   data=(str(args) +
@@ -55,7 +55,7 @@ def from_object(obj: object):
         for key in dir(obj):
             if key.find("_") != 0:
                 config_dict[key] = getattr(obj, key)
-        dictConfig(trans_config(**config_dict))
+        dictConfig(trans_config(**config_dict), force=True)
     except Exception as e:
         logger.error("Failed to set logging config: {error}\nData: {data}".format(error=e,
                                                                                   data=obj))
