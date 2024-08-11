@@ -1,14 +1,18 @@
-# -*- coding: utf-8 -*-
-# rclog/trans.py
+"""
+rclog/trans.py
+"""
 
-from logging import INFO
-from typing import Any,Optional
+from typing import TYPE_CHECKING
 
 from .env import check_debug
 from .io import mkdir
 
-def dump_format(format_name: str = "default",
-                **kw: dict[str, str]) -> dict[str, dict[str, str]]:
+if TYPE_CHECKING:
+    from typing import Optional, Mapping, Any
+
+def dump_format(
+    format_name: str = "default", **kw: Mapping[str, str]
+) -> "dict[str, dict[str, str]]":
     """
     dump formatters
 
@@ -23,10 +27,9 @@ def dump_format(format_name: str = "default",
         dict[str, dict[str, str]]: logging dict config format
     """
 
-    back_format = dict()
+    back_format = {}
     if format_name == "default":
-        back_format[
-            "format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
+        back_format["format"] = "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s"
         back_format["datefmt"] = "%Y-%m-%d %H:%M:%S"
     else:
         back_format["format"] = kw["format"]
@@ -34,11 +37,9 @@ def dump_format(format_name: str = "default",
     return back_format
 
 
-
-def dump_handler(handler_class: str,
-                 formatter: str = "default",
-                 level: Optional[str] = None,
-                 **kw) -> dict[str, str]:
+def dump_handler(
+    handler_class: str, formatter: str = "default", level: Optional[str] = None, **kw
+) -> "dict[str, str]":
     """
     dump handlers
 
@@ -56,11 +57,12 @@ def dump_handler(handler_class: str,
     Returns:
         dict[str, str]: logging dict config handler
     """
-    back_handler = dict()
+    back_handler = {}
 
     # region trans handlers
     if handler_class == "Console":
         handler_class = "logging.StreamHandler"
+        back_handler["stream"] = "ext://sys.stdout"
     if handler_class == "File":
         handler_class = "logging.handlers.RotatingFileHandler"
     # endregion
@@ -77,15 +79,12 @@ def dump_handler(handler_class: str,
         if kw["filename"] is not None:
             back_handler["filename"] = kw["filename"]
             # if file mkdir
-            match mkdir(back_handler["filename"]):
-                case 10:
-                    pass
-                case 11:
-                    pass
-                case 21:
-                    if check_debug():
-                        raise OSError("make file dir is in error!")
-        else :
+            mkdir_id = mkdir(back_handler["filename"])
+
+            if mkdir_id == 21:
+                if check_debug():
+                    raise OSError("Make file dir is in error!")
+        else:
             raise OSError("Filename is none!")
 
         back_handler["maxBytes"] = kw["maxBytes"]
@@ -97,10 +96,9 @@ def dump_handler(handler_class: str,
     return back_handler
 
 
-def trans_config(handlers: list,
-                 formats: list|None = None,
-                 exist_loggers: bool = True,
-                 **kw) -> dict[str, Any]:
+def trans_config(
+    handlers: list, formats: Optional[list] = None, exist_loggers: bool = True, **kw
+) -> "dict[str, Any]":
     """
     trans config
 
@@ -110,7 +108,7 @@ def trans_config(handlers: list,
         exist_loggers (bool, optional): _description_. Defaults to True.
 
     Keyword Args:
-        "{format_name}_format" (str, optional): _description_. 
+        "{format_name}_format" (str, optional): _description_.
             Defaults to "<%(asctime)s>[%(levelname)s]%(name)s:%(message)s".
         "{format_name}_datefmt" (str, optional): _description_. Defaults to "%Y-%m-%d %H:%M:%S".
         "{handler_name}_class" (str, optional): _description_. Defaults to "Console".
@@ -126,13 +124,13 @@ def trans_config(handlers: list,
     """
 
     # init config
-    config = dict()
+    config = {}
     config["version"] = 1
-    config["formatters"] = dict()
-    config["handlers"] = dict()
-    config["loggers"] = dict()
-    config["loggers"]["root"] = dict()
-    config["loggers"]["root"]["handlers"] = list()
+    config["formatters"] = {}
+    config["handlers"] = {}
+    config["loggers"] = {}
+    config["loggers"][""] = {}
+    config["loggers"][""]["handlers"] = {}
 
     # exist loggers
     if exist_loggers is True:
@@ -142,25 +140,29 @@ def trans_config(handlers: list,
 
     # default formats
     if formats is None:
-        formats = ["default", ]
+        formats = [
+            "default",
+        ]
 
     # formatters
     for format_name in formats:
         config["formatters"][format_name] = dump_format(
             format_name=format_name,
-            format=kw.get(f"{format_name}_format"),  # type:ignore
-            datefmt=kw.get(f"{format_name}_datefmt"))  # type:ignore
+            format=kw.get(f"{format_name}_format"),
+            datefmt=kw.get(f"{format_name}_datefmt"),
+        )
 
     # handlers
     for handler_name in handlers:
         config["handlers"][handler_name] = dump_handler(
-            handler_class=kw.get(f"{handler_name}_class"),  # type:ignore
+            handler_class=kw.get(f"{handler_name}_class"),
             formatter=kw.get(f"{handler_name}_formatter", "default"),
-            level=kw.get(f"{handler_name}_level", INFO),
+            level=kw.get(f"{handler_name}_level", "INFO"),
             filename=kw.get(f"{handler_name}_filename", "log.log"),
             maxBytes=kw.get(f"{handler_name}_maxBytes", 1048576),
             backupCount=kw.get(f"{handler_name}_backupCount", 3),
-            encoding=kw.get(f"{handler_name}_encoding", "utf8"))
-        config["loggers"]["root"]["handlers"].append(handler_name)
+            encoding=kw.get(f"{handler_name}_encoding", "utf8"),
+        )
+        config["loggers"][""]["handlers"].append(handler_name)
 
     return config
