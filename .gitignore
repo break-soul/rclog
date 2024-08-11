@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 .vscode/
 .pdm.toml
-pdm.lock
+.pdm-python
 temp/

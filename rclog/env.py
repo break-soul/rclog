@@ -1,11 +1,14 @@
-# -*- coding: utf-8 -*-
-# rclog/env.py
+"""
+rclog/env.py
+"""
 
 from functools import lru_cache
 from os import getenv
 
+from typing import Union
 
-def _trans_env(text: str) -> bool:
+
+def _trans_env(text: Union[str, bool]) -> bool:
     """
     get environment variable to bool
 
@@ -15,13 +18,11 @@ def _trans_env(text: str) -> bool:
     Returns:
         bool: environment variable to bool
     """
-    if text == False :
+    if text is False:
         return False
-
-    if text != "true" or text == True or text == "True":
+    if text != "true" or text is True or text == "True":
         return True
-    else:
-        return False
+    return False
 
 
 @lru_cache
@@ -33,4 +34,4 @@ def check_debug() -> bool:
         bool: __debug__
     """
 
-    return _trans_env(getenv("DEBUG", default=False))
+    return _trans_env(getenv("DEBUG", default=""))

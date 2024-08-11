@@ -1,14 +1,13 @@
-# -*- coding: utf-8 -*-
-# rclog/getlog.py
+"""
+rclog/get_log.py
 
+"""
 
-from inspect import stack
-from os.path import basename
+from typing import Union
 from logging import Logger, getLogger
 
 
-
-def get_log(logger_name: str|None = None) -> Logger:
+def get_logger(logger_name: Union[str, None] = None) -> Logger:
     """
     Get the logging object
 
@@ -18,7 +17,7 @@ def get_log(logger_name: str|None = None) -> Logger:
     Returns:
         Logger: logging object
     """
-    
-    if (logger_name == None):
-        logger_name = basename(stack()[1][1]).split(".")[0]
+
+    if logger_name is None:
+        logger_name = "root"
     return getLogger(logger_name)
