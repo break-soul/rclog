@@ -2,7 +2,7 @@
 rclog/config_log.py
 """
 
-from logging.config import dictConfig
+from logging import config
 
 from .env import check_debug
 from .get_log import get_logger
@@ -17,7 +17,7 @@ def __config_log(*args, **kw) -> None:
         config_dict (dict): 配置字典
     """
     try:
-        dictConfig(trans_config(*args, **kw))
+        config.dictConfig(trans_config(*args, **kw))
     except Exception as e:  # pylint: disable=broad-exception-caught
         logger = get_logger("rclog.SetLogger")
         logger.error(

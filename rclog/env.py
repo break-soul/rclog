@@ -5,10 +5,7 @@ rclog/env.py
 from functools import lru_cache
 from os import getenv
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Union
+from typing import Union
 
 
 def _trans_env(text: Union[str, bool]) -> bool:

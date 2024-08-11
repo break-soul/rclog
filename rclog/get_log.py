@@ -3,12 +3,9 @@ rclog/get_log.py
 
 """
 
+from typing import Union
 from logging import Logger, getLogger
 
-from typing import TYPE_CHECKING
-
-if TYPE_CHECKING:
-    from typing import Union
 
 def get_logger(logger_name: Union[str, None] = None) -> Logger:
     """

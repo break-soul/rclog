@@ -2,7 +2,6 @@
 rclog/io.py
 """
 
-
 from os import makedirs, path
 from pathlib import Path
 
@@ -23,6 +22,6 @@ def mkdir(file_path: str) -> int:
         return 11
     try:
         makedirs(dir_path)
-    except Exception:     # pylint: disable=broad-exception-caught
+    except Exception:  # pylint: disable=broad-exception-caught
         return 20
     return 10
