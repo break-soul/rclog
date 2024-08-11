@@ -24,13 +24,10 @@ jobs:
         python-version: '3.8'
     - name: Install dependencies
       run: |
-        
         pdm install
     - name: Build package
       run: |
         pdm build
-        mkdir whl
-        mv dist/*.whl whl/
     - name: upload result
       if: success()
       uses: actions/upload-artifact@v3
